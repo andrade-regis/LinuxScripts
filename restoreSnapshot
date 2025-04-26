@@ -1,0 +1,28 @@
+#!/bin/bash
+
+echo "Restaurando o snapshot para a máquina virtual !!!"
+
+VM_NAME="linux_aula"
+SNAPSHOT_NAME="linux_snapshot_aula"
+
+VBoxManage snapshot "$VM_NAME" restore "$SNAPSHOT_NAME"
+
+echo "Atualizando o servidor!!!"
+sudo apt update && sudo apt upgrade -y
+
+echo "Instalando o Apache2!!!"
+sudo apt install apache2 -y
+
+echo "Instalando o Unzip!!!"
+sudo apt install unzip -y
+
+echo "Baixando a aplicação!!!"
+wget https://github.com/denilsonbonatti/linux-site-dio/archive/refs/heads/main.zip -P /tmp
+
+echo "Descompactando o arquivo!!!"
+unzip /tmp/main.zip -d /tmp
+
+echo "Copiando os arquivos para o diretório do Apache!!"
+sudo cp -r /tmp/linux-site-dio-main/* /var/www/html/
+
+echo "Script executado com sucesso!"
